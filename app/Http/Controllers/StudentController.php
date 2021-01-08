@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Student;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
+use App\Models\Post;
 
 class StudentController extends Controller
 {
@@ -35,7 +37,11 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
+        $student =Student::create($request->all());
+        $student =$student->refresh();
+        return response($student,Response::HTTP_CREATED);
+
     }
 
     /**
