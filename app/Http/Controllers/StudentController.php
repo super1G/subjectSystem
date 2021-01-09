@@ -17,6 +17,8 @@ class StudentController extends Controller
     public function index()
     {
         //
+        $students =Student::get();
+        return response(['data'=>$students],Response::HTTP_OK);
     }
 
     /**
@@ -52,7 +54,8 @@ class StudentController extends Controller
      */
     public function show(Student $student)
     {
-        //
+        
+        return response($student,Response::HTTP_OK);
     }
 
     /**
