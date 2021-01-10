@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Curriculum;
+use App\Models\Teacher;
 use Illuminate\Http\Request;
 
 use Symfony\Component\HttpFoundation\Response;
@@ -54,8 +55,10 @@ class CurriculumController extends Controller
     public function show(Curriculum $curriculum)
     {
         //
-        $curriculums =Curriculum::with('teacher')->get();
-        return response(['data'=>$curriculums],Response::HTTP_OK);
+        //$curriculum=$curriculum->with('teacher');
+        $curriculum =Curriculum::with('teacher')->find($curriculum['id']);
+        //Teacher::find($curriculum['id'])->curriculum;
+        return response(['data'=>$curriculum,'id'=>$curriculum['id']],Response::HTTP_OK);
     }
 
     /**
