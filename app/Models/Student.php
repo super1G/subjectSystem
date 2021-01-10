@@ -14,4 +14,7 @@ class Student extends Model
         'birthday',
         'description',
     ];
+    public function elective(){
+        return $this->hasMany('App\Models\Elective','student_id','id');
+    }
 }

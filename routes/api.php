@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\CurriculumController;
+use App\Http\Controllers\ElectiveController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -20,6 +21,7 @@ use App\Http\Controllers\CurriculumController;
 Route::apiResource('students',StudentController::class);
 Route::apiResource('teachers',TeacherController::class);
 Route::apiResource('curriculums',CurriculumController::class);
+Route::apiResource('electives',ElectiveController::class);
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();

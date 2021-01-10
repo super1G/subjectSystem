@@ -56,9 +56,9 @@ class CurriculumController extends Controller
     {
         //
         //$curriculum=$curriculum->with('teacher');
-        $curriculum =Curriculum::with('teacher')->find($curriculum['id']);
+        $curriculum =Curriculum::with('teacher')->with('Elective')->find($curriculum['id']);
         //Teacher::find($curriculum['id'])->curriculum;
-        return response(['data'=>$curriculum,'id'=>$curriculum['id']],Response::HTTP_OK);
+        return response(['data'=>$curriculum],Response::HTTP_OK);
     }
 
     /**

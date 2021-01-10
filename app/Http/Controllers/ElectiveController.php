@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Student;
+use App\Models\Elective;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
-use App\Models\Post;
 
-class StudentController extends Controller
+use Symfony\Component\HttpFoundation\Response;
+
+class ElectiveController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,8 +17,8 @@ class StudentController extends Controller
     public function index()
     {
         //
-        $students =Student::get();
-        return response(['data'=>$students],Response::HTTP_OK);
+        $elective=Elective::with('Student')->with('Curriculum')->get();
+        return response(['data'=>$elective],Response::HTTP_OK);
     }
 
     /**
@@ -39,32 +39,32 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
-        
-        $student =Student::create($request->all());
-        $student =$student->refresh();
-        return response($student,Response::HTTP_CREATED);
-
+        //
+        $elective=Elective::create($request->all());
+        $elective=$elective->refresh();
+        return response(['data'=>$elective],Response::HTTP_CREATED);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Student  $student
+     * @param  \App\Models\Elective  $elective
      * @return \Illuminate\Http\Response
      */
-    public function show(Student $student)
+    public function show(Elective $elective)
     {
-        $student=Student::with('Elective')->find($student['id']);   
-        return response($student,Response::HTTP_OK);
+        //
+        $elective=Elective::with('Student')->with('Curriculum')->find($elective['id']);
+        return response(['data'=>$elective],Response::HTTP_OK);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Student  $student
+     * @param  \App\Models\Elective  $elective
      * @return \Illuminate\Http\Response
      */
-    public function edit(Student $student)
+    public function edit(Elective $elective)
     {
         //
     }
@@ -73,26 +73,26 @@ class StudentController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Student  $student
+     * @param  \App\Models\Elective  $elective
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Student $student)
+    public function update(Request $request, Elective $elective)
     {
         //
-        $student->update($request->all());
-        return response($student,Response::HTTP_OK);
+        $elective->update($request->all());
+        return response($elective,Response::HTTP_OK);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Student  $student
+     * @param  \App\Models\Elective  $elective
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Student $student)
+    public function destroy(Elective $elective)
     {
         //
-        $student->delete();
+        $elective->delete();
         return response(null,Response::HTTP_NO_CONTENT);
     }
 }

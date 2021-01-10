@@ -18,4 +18,7 @@ class Curriculum extends Model
     {
         return $this->belongsTo('App\Models\Teacher');
     }
+    public function elective(){
+        return $this->hasMany('App\Models\Elective','curriculum_id','id');
+    }
 }
