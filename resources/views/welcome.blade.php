@@ -18,8 +18,10 @@
     </head>
     <body>
         <div id="app">
-            <example-component />
-
+        <example-component ></example-component>
+        <button v-on:click="counter += 1">Add 1</button>
+        <p>The button above has been clicked @{{ counter }} times.</p>
+         
         </div>
         <script src="/js/app.js"></script>
         
