@@ -1963,9 +1963,45 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
+      isSave: false,
       students: [],
       student: {
         id: null,
@@ -2003,6 +2039,47 @@ __webpack_require__.r(__webpack_exports__);
         console.log(response);
         console.log("ERROR");
       });
+    },
+    modify: function modify(student) {
+      location.href = "#form";
+      this.student.id = student.id;
+      this.student.name = student.name;
+      this.student.birthday = student.birthday;
+      this.student.description = student.description;
+      this.isSave = true;
+      console.log(this.student);
+    },
+    save: function save() {
+      var self = this;
+      axios.patch('/api/students/' + this.student.id, {
+        name: this.student.name,
+        birthday: this.student.birthday,
+        description: this.student.description
+      }).then(function (response) {
+        if (response.data['ok']) {
+          self.init();
+          self.isSave = false;
+          this.student = {
+            id: null,
+            name: '',
+            birthday: '',
+            description: ''
+          };
+        }
+
+        console.log(response);
+      })["catch"](function (response) {
+        console.log(response);
+      });
+    },
+    cancel: function cancel() {
+      this.student = {
+        id: null,
+        name: '',
+        birthday: '',
+        description: ''
+      };
+      this.isSave = false;
     } //  modify: function (post) {
     //     location.href = "#form";
     //     this.student.id = "12";
@@ -37701,7 +37778,11 @@ var render = function() {
         _vm._l(_vm.students.data, function(student) {
           return _c("div", { key: student.id }, [
             _c("div", { staticClass: "row justify-content-start" }, [
-              _c("div", { staticClass: "col-4" }, [
+              _c("div", { staticClass: "col-1" }, [
+                _c("h1", [_vm._v(_vm._s(student.id))])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col-2" }, [
                 _c("h1", [_vm._v(_vm._s(student.name))])
               ]),
               _vm._v(" "),
@@ -37719,7 +37800,7 @@ var render = function() {
                   staticClass: "btn btn-xs btn-primary",
                   on: {
                     click: function($event) {
-                      return _vm.modify(_vm.post)
+                      return _vm.modify(student)
                     }
                   }
                 },
@@ -37742,7 +37823,150 @@ var render = function() {
               _c("hr")
             ])
           ])
-        })
+        }),
+        _vm._v(" "),
+        _c("form", [
+          _c("div", { staticClass: "mb-3" }, [
+            _c(
+              "label",
+              { staticClass: "form-label", attrs: { for: "inputName" } },
+              [_vm._v("名字")]
+            ),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.student.name,
+                  expression: "student.name"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: {
+                type: "text",
+                id: "inputName",
+                "aria-describedby": "nameHelp"
+              },
+              domProps: { value: _vm.student.name },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.student, "name", $event.target.value)
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c("div", { staticClass: "form-text", attrs: { id: "nameHelp" } }, [
+              _vm._v("輸入名字")
+            ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "mb-3" }, [
+            _c(
+              "label",
+              { staticClass: "form-label", attrs: { for: "InputDate" } },
+              [_vm._v("生日")]
+            ),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.student.birthday,
+                  expression: "student.birthday"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { type: "date", id: "InputDate" },
+              domProps: { value: _vm.student.birthday },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.student, "birthday", $event.target.value)
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "mb-3" }, [
+            _c(
+              "label",
+              { staticClass: "form-label", attrs: { for: "InputDescription" } },
+              [_vm._v("備註")]
+            ),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.student.description,
+                  expression: "student.description"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { type: "text", id: "InputDescription" },
+              domProps: { value: _vm.student.description },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.student, "description", $event.target.value)
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group" }, [
+            _vm.isSave
+              ? _c("div", [
+                  _c(
+                    "button",
+                    {
+                      on: {
+                        click: function($event) {
+                          $event.preventDefault()
+                          return _vm.save($event)
+                        }
+                      }
+                    },
+                    [_vm._v("儲存")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      on: {
+                        click: function($event) {
+                          $event.preventDefault()
+                          return _vm.cancel($event)
+                        }
+                      }
+                    },
+                    [_vm._v("取消")]
+                  )
+                ])
+              : _c(
+                  "button",
+                  {
+                    on: {
+                      click: function($event) {
+                        $event.preventDefault()
+                        return _vm.publish($event)
+                      }
+                    }
+                  },
+                  [_vm._v("發佈")]
+                )
+          ])
+        ])
       ],
       2
     )
@@ -37754,7 +37978,9 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "row justify-content-start" }, [
-      _c("div", { staticClass: "col-4" }, [_c("h1", [_vm._v("名字")])]),
+      _c("div", { staticClass: "col-1" }, [_c("h1", [_vm._v("ID")])]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-2" }, [_c("h1", [_vm._v("名字")])]),
       _vm._v(" "),
       _c("div", { staticClass: "col-3" }, [_c("h2", [_vm._v("生日")])]),
       _vm._v(" "),

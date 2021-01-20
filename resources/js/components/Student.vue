@@ -4,7 +4,10 @@
         
         <div class="container">
             <div class="row justify-content-start">
-                    <div class="col-4">
+                    <div class="col-1">
+                        <h1>ID</h1>
+                    </div>
+                    <div class="col-2">
                         <h1>名字</h1>
                     </div>
                     <div class="col-3">
@@ -17,8 +20,12 @@
                     <hr>
                 </div>
             <div v-for="(student) in students.data" v-bind:key="student.id">
+               
                 <div class="row justify-content-start">
-                    <div class="col-4">
+                    <div class="col-1">
+                        <h1>{{ student.id }}</h1>
+                    </div>
+                    <div class="col-2">
                         <h1>{{ student.name }}</h1>
                     </div>
                     <div class="col-3">
@@ -28,12 +35,40 @@
                         <p>{{ student.description}}</p>
                     </div>
                     
-                    <button class="btn btn-xs btn-primary" @click="modify(post)">修改</button>
+                    <button class="btn btn-xs btn-primary" @click="modify(student)">修改</button>
                     <button class="btn btn-xs btn-danger" @click="remove(post.id)">刪除</button>
                     <hr>
                 </div>
             
             </div>
+
+            <form>
+                <div class="mb-3">
+                    <label for="inputName" class="form-label">名字</label>
+                    <input v-model="student.name" type="text" class="form-control" id="inputName" aria-describedby="nameHelp">
+                    <div id="nameHelp" class="form-text">輸入名字</div>
+                </div>
+                <div class="mb-3">
+                    <label for="InputDate" class="form-label">生日</label>
+                    <input v-model="student.birthday" type="date" class="form-control" id="InputDate">
+                </div>
+                <div class="mb-3">
+                    <label for="InputDescription" class="form-label">備註</label>
+                    <input v-model="student.description" type="text" class="form-control" id="InputDescription">
+                </div>
+                
+                
+
+                
+
+                <div class="form-group">
+                    <div v-if="isSave">
+                        <button @click.prevent="save">儲存</button>
+                        <button @click.prevent="cancel">取消</button>
+                    </div>
+                    <button v-else @click.prevent="publish">發佈</button>
+                </div>
+            </form>
         </div>
         
 
@@ -69,12 +104,14 @@ export default {
         
         
         return {
+            isSave: false,
             students: [],
             student: {
                 id:null,
                 name: '',
                 birthday: '',
                 description: ''
+                
             }
             // type:'names',
 
@@ -112,7 +149,39 @@ export default {
                     console.log(response);
                     console.log("ERROR");
                 });
-        }
+        },
+        modify: function (student) {
+            location.href = "#form";
+            this.student.id = student.id;
+            this.student.name = student.name;
+            this.student.birthday = student.birthday;
+            this.student.description = student.description;
+            this.isSave = true;
+            console.log(this.student);
+        }, 
+         save: function () {
+             
+            let self = this;
+            axios.patch('/api/students/'+this.student.id ,{name:this.student.name, birthday:this.student.birthday,description:this.student.description} )
+                .then(function (response) {
+                    if (response.data['ok']) {
+                        self.init();
+                        self.isSave = false;
+                        this.student = {id: null, name: '', birthday: '',description: ''};
+                    }
+                    console.log(response);
+                })
+                .catch(function (response) {
+                    console.log(response);
+                   
+                    
+                });
+                
+        },
+        cancel: function () {
+            this.student = {id: null, name: '', birthday: '',description: ''};
+            this.isSave = false;
+        },
     
         //  modify: function (post) {
         //     location.href = "#form";
