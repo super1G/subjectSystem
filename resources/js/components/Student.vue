@@ -1,4 +1,4 @@
-<template v-if="type==='name'">
+<template>
     <div class="album py-5 bg-light">
         
         
@@ -36,7 +36,7 @@
                     </div>
                     
                     <button class="btn btn-xs btn-primary" @click="modify(student)">修改</button>
-                    <button class="btn btn-xs btn-danger" @click="remove(post.id)">刪除</button>
+                    <button class="btn btn-xs btn-danger" @click="remove(student.id)">刪除</button>
                     <hr>
                 </div>
             
@@ -50,11 +50,13 @@
                 </div>
                 <div class="mb-3">
                     <label for="InputDate" class="form-label">生日</label>
-                    <input v-model="student.birthday" type="date" class="form-control" id="InputDate">
+                    <input v-model="student.birthday" type="date" class="form-control" id="InputDate" aria-describedby="DateHelp">
+                    <div id="DateHelp" class="form-text">非必填</div>
                 </div>
                 <div class="mb-3">
                     <label for="InputDescription" class="form-label">備註</label>
-                    <input v-model="student.description" type="text" class="form-control" id="InputDescription">
+                    <input v-model="student.description" type="text" class="form-control" id="InputDescription" aria-describedby="DescriptionHelp">
+                    <div id="DescriptionHelp" class="form-text">非必填</div>
                 </div>
                 
                 
@@ -150,6 +152,22 @@ export default {
                     console.log("ERROR");
                 });
         },
+        publish: function () {
+            // 
+            let self = this;
+            axios.post('/api/students', this.student)
+                .then(function (response) {
+                    if (response.data['ok']) {
+                        self.init();
+                        
+                        this.student = {id: null, name: '', birthday: '',description: ''};
+                    }
+                })
+                .catch(function (response) {
+                    console.log(response)
+                });
+        },
+
         modify: function (student) {
             location.href = "#form";
             this.student.id = student.id;
@@ -177,6 +195,18 @@ export default {
                     
                 });
                 
+        },
+        remove: function (id) {
+            let self = this;
+            axios.delete('/api/students/' + id)
+                .then(function (response) {
+                    if (response.data['ok']) {
+                        self.init();
+                    }
+                })
+                .catch(function (response) {
+                    console.log(response);
+                });
         },
         cancel: function () {
             this.student = {id: null, name: '', birthday: '',description: ''};
