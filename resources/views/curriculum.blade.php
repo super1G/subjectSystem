@@ -3,8 +3,8 @@
 
 @section('content')
     <div id=app>
-       
-        <student></student>
+        
+        <curriculum></curriculum>
         
     </div>
 @endsection

@@ -18,7 +18,21 @@ Route::get('/', function () {
 });
 
 Auth::routes();
-Route::get('/test', function () {
-    return view('test');
-});
+
+Route::get('/students', function () {
+    return view('student');
+})->name('students');
+
+Route::get('/teachers', function () {
+    return view('teacher');
+})->name('teachers');
+
+Route::get('/curriculums', function () {
+    return view('curriculum');
+})->name('curriculums');    
+
+Route::get('/electives', function () {
+    return view('elective');
+})->name('electives');   
+
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

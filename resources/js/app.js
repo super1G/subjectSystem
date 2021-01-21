@@ -27,8 +27,11 @@ window.Vue = require('vue').default;
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 import Student from './components/Student.vue';
+import Teacher from './components/Teacher.vue';
+import Curriculum from './components/Curriculum.vue';
+import Elective from './components/Elective.vue';
 new Vue({
     el: '#app',
-    components: { Student }
+    components: { Student ,Teacher,Curriculum,Elective}
 
 });
